@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurador BMW K100 | Custom Moto Lab</title>
+    
+    <link rel="stylesheet" href="../style.css">
+
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    
+</head>
+<body class="body-configurador">
+
+    <model-viewer id="moto-3d" 
+        src="MODELOS/BMWK100.glb" 
+        environment-image="estudio.hdr"
+        shadow-intensity="2"
+        camera-controls 
+        exposure="1.1" 
+        camera-orbit="45deg 75deg 105%"
+        crossorigin="anonymous">
+    </model-viewer>
+
+    <div class="topbar-code">
+        <div class="topbar-content">
+            <div class="brand-small">BMW K100 <span class="custom-lab">Custom Code</span></div>
+            
+            <div class="code-actions">
+                <div class="code-display-wrapper">
+                    <span class="label-mini">TU CÓDIGO:</span>
+                    <code id="display-code">SELECCIONA UNA OPCIÓN</code>
+                    <button class="btn-copy-icon" onclick="copiarCodigo()" title="Copiar Código">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="code-input-wrapper">
+                    <input type="text" id="input-code" placeholder="Pegar código...">
+                    <button class="btn-load-code" onclick="cargarCodigo()">CARGAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <a href="bmw-models.html" class="btn-volver-atras">← Volver</a>
+            <h2 id="sidebar-title">Configurador </h2>
+        </div>
+
+        <div class="scroll-container">
+            <button class="accordion">Carrocería</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Depósito</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#494444" onclick="changeColor('Tanque', '#494444',event)"></div>
+                        <div class="color-dot" style="background:#111" onclick="changeColor('Tanque', '#111',event)"></div>
+                        <div class="color-dot" style="background:#bdc3c7" onclick="changeColor('Tanque', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#01073a" onclick="changeColor('Tanque', '#01073a',event)"></div>
+                        <div class="color-dot" style="background:#013a14" onclick="changeColor('Tanque', '#013a14',event)"></div>
+                    </div>
+                    <label>Acabado Depósito</label>
+                    <div class="contenedor-acabados">
+                        <button class="btn-finish" onclick="setRoughness('Tanque', 0.5,event)">Normal</button>
+                        <button class="btn-finish" onclick="setRoughness('Tanque', 0.05,event)">Cromo</button>
+                        <button class="btn-finish" onclick="setRoughness('Tanque', 0.9,event)">Mate</button>
+                    </div>
+                    <label>Guardabarros</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#494444" onclick="changeColor('Guardabarros', '#494444',event)"></div>
+                        <div class="color-dot" style="background:#111" onclick="changeColor('Guardabarros', '#111',event)"></div>
+                        <div class="color-dot" style="background:#bdc3c7" onclick="changeColor('Guardabarros', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#01073a" onclick="changeColor('Guardabarros', '#01073a',event)"></div>
+                        <div class="color-dot" style="background:#013a14" onclick="changeColor('Guardabarros', '#013a14',event)"></div>
+                    </div>
+                    <label>Acabado Guardabarros</label>
+                    <div class="contenedor-acabados">
+                        <button class="btn-finish" onclick="setRoughness('Guardabarros', 0.5,event)">Normal</button>
+                        <button class="btn-finish" onclick="setRoughness('Guardabarros', 0.05,event)">Cromo</button>
+                        <button class="btn-finish" onclick="setRoughness('Guardabarros', 0.9,event)">Mate</button>
+                    </div>
+                    <label>Colin</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#494444" onclick="changeColor('Colin', '#494444',event)"></div>
+                        <div class="color-dot" style="background:#111" onclick="changeColor('Colin', '#111',event)"></div>
+                        <div class="color-dot" style="background:#bdc3c7" onclick="changeColor('Colin', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#01073a" onclick="changeColor('Colin', '#01073a',event)"></div>
+                        <div class="color-dot" style="background:#013a14" onclick="changeColor('Colin', '#013a14',event)"></div>
+                    </div>
+                    <label>Acabado Colin</label>
+                    <div class="contenedor-acabados">
+                        <button class="btn-finish" onclick="setRoughness('Colin', 0.5,event)">Normal</button>
+                        <button class="btn-finish" onclick="setRoughness('Colin', 0.05,event)">Cromo</button>
+                        <button class="btn-finish" onclick="setRoughness('Colin', 0.9,event)">Mate</button>
+                    </div>
+                    <label>Carcasa de Faro</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#494444" onclick="changeColor('Luz', '#494444',event)"></div>
+                        <div class="color-dot" style="background:#111" onclick="changeColor('Luz', '#111',event)"></div>
+                        <div class="color-dot" style="background:#bdc3c7" onclick="changeColor('Luz', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#01073a" onclick="changeColor('Luz', '#01073a',event)"></div>
+                        <div class="color-dot" style="background:#013a14" onclick="changeColor('Luz', '#013a14',event)"></div>
+                    </div>
+                    <label>Acabado</label>
+                    <div class="contenedor-acabados">
+                        <button class="btn-finish" onclick="setRoughness('Luz', 0.5,event)">Normal</button>
+                        <button class="btn-finish" onclick="setRoughness('Luz', 0.05,event)">Cromo</button>
+                        <button class="btn-finish" onclick="setRoughness('Luz', 0.9,event)">Mate</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="accordion">Asiento</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Color Asiento</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#bdc3c7" onclick="changeColor('Asiento', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#713610" onclick="changeColor('Asiento', '#713610',event)"></div>
+                        <div class="color-dot" style="background:#000" onclick="changeColor('Asiento', '#000',event)"></div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <button class="accordion">Mecánica & Chasis</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Chasis</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#111" onclick="changeColor('Chasis', '#111',event)"></div>
+                        <div class="color-dot" style="background:#e5e9ec" onclick="changeColor('Chasis', '#e5e9ec',event)"></div>
+                        <div class="color-dot" style="background:#8d8d8d" onclick="changeColor('Chasis', '#8d8d8d',event)"></div>
+                    </div>
+                    <label>Acabado Chasis</label>
+                    <div class="contenedor-acabados">
+                        <button class="btn-finish" onclick="setRoughness('Chasis', 0.5,event)">Normal</button>
+                        <button class="btn-finish" onclick="setRoughness('Chasis', 0.05,event)">Cromo</button>
+                        <button class="btn-finish" onclick="setRoughness('Chasis', 0.9,event)">Mate</button>
+                    </div>
+                    
+                    <label>Motor</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#111" onclick="changeColor('Motor', '#111',event)"></div>
+                        <div class="color-dot" style="background:#383838" onclick="changeColor('Motor', '#383838',event)"></div>
+                        <div class="color-dot" style="background:#8d8d8d" onclick="changeColor('Motor', '#8d8d8d',event)"></div>
+                    </div>
+                    <label>Acabado Motor</label>
+                    <div class="contenedor-acabados">
+                        <button class="btn-finish" onclick="setRoughness('Motor', 0.5,event)">Normal</button>
+                        <button class="btn-finish" onclick="setRoughness('Motor', 0.05,event)">Cromo</button>
+                        <button class="btn-finish" onclick="setRoughness('Motor', 0.9,event)">Mate</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="accordion">Tren Delantero</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Horquillas</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#bdc3c7" onclick="changeColor('Horquillas', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#B1B52E" onclick="changeColor('Horquillas', '#B1B52E',event)"></div>
+                        <div class="color-dot" style="background:#111" onclick="changeColor('Horquillas', '#111',event)"></div>
+                    </div>
+                    <label>Acabado Horquillas</label>
+                    <div class="contenedor-acabados">
+                        <button class="btn-finish" onclick="setRoughness('Horquillas', 0.5,event)">Normal</button>
+                        <button class="btn-finish" onclick="setRoughness('Horquillas', 0.05,event)">Cromo</button>
+                        <button class="btn-finish" onclick="setRoughness('Horquillas', 0.9,event)">Mate</button>
+                    </div>
+                    <label>Tija</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#bdc3c7" onclick="changeColor('Tija', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#B1B52E" onclick="changeColor('Tija', '#B1B52E',event)"></div>
+                        <div class="color-dot" style="background:#111" onclick="changeColor('Tija', '#111',event)"></div>
+                    </div>
+                    <label>Acabado Tija</label>
+                    <div class="contenedor-acabados">
+                        <button class="btn-finish" onclick="setRoughness('Tija', 0.5,event)">Normal</button>
+                        <button class="btn-finish" onclick="setRoughness('Tija', 0.05,event)">Cromo</button>
+                        <button class="btn-finish" onclick="setRoughness('Tija', 0.9,event)">Mate</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="accordion">Suspensión Trasera</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Muelle</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#ff0000" onclick="changeColor('Muelle', '#ff0000',event)"></div>
+                        <div class="color-dot" style="background:#f1c40f" onclick="changeColor('Muelle', '#f1c40f',event)"></div>
+                        <div class="color-dot" style="background:#bdc3c7" onclick="changeColor('Muelle', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#01073a" onclick="changeColor('Muelle', '#01073a',event)"></div>
+                        <div class="color-dot" style="background:#013a14" onclick="changeColor('Muelle', '#013a14',event)"></div>
+                    </div>
+                    <label>Piston</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#494444" onclick="changeColor('Suspension', '#494444',event)"></div>
+                        <div class="color-dot" style="background:#111" onclick="changeColor('Suspension', '#111',event)"></div>
+                        <div class="color-dot" style="background:#bdc3c7" onclick="changeColor('Suspension', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#01073a" onclick="changeColor('Suspension', '#01073a',event)"></div>
+                        <div class="color-dot" style="background:#013a14" onclick="changeColor('Suspension', '#013a14',event)"></div>
+                    </div>
+                    <label>Acabado Piston</label>
+                    <div class="contenedor-acabados">
+                        <button class="btn-finish" onclick="setRoughness('Suspension', 0.5,event)">Normal</button>
+                        <button class="btn-finish" onclick="setRoughness('Suspension', 0.05,event)">Cromo</button>
+                        <button class="btn-finish" onclick="setRoughness('Suspension', 0.9,event)">Mate</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="accordion">Ruedas</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Tipo</label>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="btn-finish" id="btn-taco" onclick="toggleRuedaDEL('taco',event)">Rueda Taco</button>
+                        <button class="btn-finish" id="btn-liso" onclick="toggleRuedaDEL('liso',event)">Rueda Liso</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="accordion">Llantas</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Tipo</label>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="btn-finish" id="btn-radios" onclick="toggleLlanta('radios',event)">Llanta Radio</button>
+                        <button class="btn-finish" id="btn-mecanizada" onclick="toggleLlanta('mecanizada',event)">Llanta Mecanizada</button>
+                    </div>
+                    <label>Llantas</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#bdc3c7" onclick="changeColor(['Llanta_radios','Llanta_mecanizada'],'#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#B1B52E" onclick="changeColor(['Llanta_radios','Llanta_mecanizada'], '#B1B52E',event)"></div>
+                        <div class="color-dot" style="background:#000" onclick="changeColor(['Llanta_radios','Llanta_mecanizada'], '#000',event)"></div>
+                    </div>
+                    <label>Acabado</label>
+                    <div class="contenedor-acabados">
+                        <button class="btn-finish" onclick="setRoughness('Llantas', 0.5,event)">Normal</button>
+                        <button class="btn-finish" onclick="setRoughness('Llantas', 0.05,event)">Cromo</button>
+                        <button class="btn-finish" onclick="setRoughness('Llantas', 0.9,event)">Mate</button>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="accordion">Instrumentación</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Tipo de Velocimetro</label>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="btn-finish" id="btn-analog" onclick="toggleTacometro('analogico',event)">Analógico Retro</button>
+                        <button class="btn-finish" id="btn-digital" onclick="toggleTacometro('digital',event)">Digital Moderno</button>
+                    </div>
+                    <p style="font-size: 0.6rem; color: #555; margin-top: 10px; text-transform: uppercase;">
+                        * Cambia el estilo del panel de instrumentos
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar">
+    
+
+    <div class="scroll-container">
+        <div id="paso-personalizacion">
+            <div style="padding: 20px; text-align: right;">
+                <button class="btn-configurar" onclick="irAFormulario()">Siguiente</button>
+            </div>
+        </div>
+
+
+            <div id="paso-formulario" style="display: none; padding: 25px;">
+                <label>Nombre</label>
+                <input type="text" id="user-name" placeholder="Tu nombre">
+                
+                <label>Email</label>
+                <input type="email" id="user-email" placeholder="tu@email.com">
+
+                <label>¿Dispones de la moto?</label>
+                <select type="moto" id="user-disponibilidad" style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;">
+                    <option value="si">Dispongo de la moto</option>
+                    <option value="no">No dispongo de la moto</option>
+                </select>
+                
+                <label>Notas</label>
+                <textarea id="user-message" rows="4"></textarea>
+
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-finish" style="flex:1" onclick="irAConfigurador()">Atrás</button>
+                    <button id="btn-enviar-final" class="btn-configurar" style="flex:2" onclick="enviarPresupuesto()">
+                        <span id="text-btn">Enviar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="moto-logic.js"></script>
+</body>
+</html>
