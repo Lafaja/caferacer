@@ -425,41 +425,5 @@ function copiarCodigo() {
         setTimeout(() => btn.style.color = originalColor, 1000);
     });
 }
-// Script para la barra de carga
-const modelViewer = document.querySelector('model-viewer');
-if (modelViewer) {
-    const progress = modelViewer.querySelector('.update-bar');
-    const progressBar = modelViewer.querySelector('.progress-bar');
-    if (progress && progressBar) {
-        modelViewer.addEventListener('progress', (event) => {
-            progress.style.width = event.detail.totalProgress * 100 + '%';
-            if (event.detail.totalProgress === 1) {
-                progressBar.classList.add('hide');
-                if (event.detail.totalProgress === 1) {
-                    setTimeout(() => {
-                        progressBar.classList.add('hide');
-                    }, 500);
-                }
-            } else {
-                progressBar.classList.remove('hide');
-                if (event.detail.totalProgress === 0) {
-                    progress.style.width = '0%';
-                }
-            }
-        });
-    }
-}
 
-
-// Cache-buster automático para modelos 3D y HDRs para evitar el caché agresivo de GitHub Pages
-document.addEventListener('DOMContentLoaded', () => {
-    const viewer = document.querySelector('model-viewer');
-    if (viewer) {
-        const currentSrc = viewer.getAttribute('src');
-        const currentEnv = viewer.getAttribute('environment-image');
-        
-        if (currentSrc) viewer.setAttribute('src', currentSrc + '?v=' + new Date().getTime());
-        if (currentEnv) viewer.setAttribute('environment-image', currentEnv + '?v=' + new Date().getTime());
-    }
-});
 
