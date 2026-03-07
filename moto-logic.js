@@ -450,3 +450,16 @@ if (modelViewer) {
     }
 }
 
+
+// Cache-buster automático para modelos 3D y HDRs para evitar el caché agresivo de GitHub Pages
+document.addEventListener('DOMContentLoaded', () => {
+    const viewer = document.querySelector('model-viewer');
+    if (viewer) {
+        const currentSrc = viewer.getAttribute('src');
+        const currentEnv = viewer.getAttribute('environment-image');
+        
+        if (currentSrc) viewer.setAttribute('src', currentSrc + '?v=' + new Date().getTime());
+        if (currentEnv) viewer.setAttribute('environment-image', currentEnv + '?v=' + new Date().getTime());
+    }
+});
+
