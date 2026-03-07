@@ -425,3 +425,28 @@ function copiarCodigo() {
         setTimeout(() => btn.style.color = originalColor, 1000);
     });
 }
+// Script para la barra de carga
+const modelViewer = document.querySelector('model-viewer');
+if (modelViewer) {
+    const progress = modelViewer.querySelector('.update-bar');
+    const progressBar = modelViewer.querySelector('.progress-bar');
+    if (progress && progressBar) {
+        modelViewer.addEventListener('progress', (event) => {
+            progress.style.width = event.detail.totalProgress * 100 + '%';
+            if (event.detail.totalProgress === 1) {
+                progressBar.classList.add('hide');
+                if (event.detail.totalProgress === 1) {
+                    setTimeout(() => {
+                        progressBar.classList.add('hide');
+                    }, 500);
+                }
+            } else {
+                progressBar.classList.remove('hide');
+                if (event.detail.totalProgress === 0) {
+                    progress.style.width = '0%';
+                }
+            }
+        });
+    }
+}
+
