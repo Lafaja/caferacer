@@ -1178,6 +1178,12 @@ model-viewer > #ar-prompt > img {
         margin-top: 0 !important;
         border-top: 2px solid var(--accent-gold);
         height: 50vh; /* Fallback if flex doesn't restrict perfectly */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .scroll-container {
+        padding-bottom: 80px; /* Make space for the absolute/fixed Siguiente button if it sticks, or just give enough scroll room */
     }
 
     /* Topbar Variables (Código Configuración) */
