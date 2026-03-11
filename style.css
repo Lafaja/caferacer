@@ -1163,12 +1163,14 @@ model-viewer > #ar-prompt > img {
     .body-configurador {
         flex-direction: column !important;
         height: 100vh !important;
+        height: 100dvh !important; /* Soluciona problema de barras de navegador móvil */
         overflow: hidden;
     }
 
     .viewer-wrapper {
         flex: none !important;
         height: 50vh !important;
+        height: 50dvh !important;
         width: 100% !important;
     }
     
@@ -1177,13 +1179,26 @@ model-viewer > #ar-prompt > img {
         flex: 1 !important;
         margin-top: 0 !important;
         border-top: 2px solid var(--accent-gold);
-        height: 50vh; /* Fallback if flex doesn't restrict perfectly */
+        height: 50vh; 
+        height: 50dvh;
         display: flex;
         flex-direction: column;
     }
 
     .scroll-container {
-        padding-bottom: 80px; /* Make space for the absolute/fixed Siguiente button if it sticks, or just give enough scroll room */
+        padding-bottom: 90px; /* Make space for the absolute/fixed Siguiente button if it sticks, or just give enough scroll room */
+    }
+
+    /* Fijar botón "Siguiente" abajo en móvil para garantizar visibilidad */
+    #paso-personalizacion {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        background: var(--panel-light);
+        z-index: 999;
+        border-top: 1px solid var(--border-color);
+        box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
     }
 
     /* Topbar Variables (Código Configuración) */
