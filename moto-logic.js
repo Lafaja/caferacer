@@ -2,6 +2,7 @@
 const modelViewer = document.querySelector('#moto-3d');
 let elecciones = {}; // Objeto dinámico: solo guardará lo que el usuario toque
 
+
 // 2. INICIALIZACIÓN DE ACORDEONES
 // Esto funcionará en cualquier HTML que use la clase .accordion
 document.addEventListener("DOMContentLoaded", () => {
@@ -21,6 +22,18 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!isActive) {
                 this.classList.add("active");
                 panel.style.maxHeight = panel.scrollHeight + "px";
+
+                // 🎥 CAMERA HOTSPOT: volar automáticamente a la zona de esta sección
+                const orbit  = this.dataset.cameraOrbit;
+                const target = this.dataset.cameraTarget;
+                if (orbit) modelViewer.cameraOrbit = orbit;
+                // Siempre resetear cameraTarget: si no hay atributo, volver al centro automático
+                modelViewer.cameraTarget = target || 'auto';
+            } else {
+                // 🔄 Al cerrar el acordeón: volver a vista general de Carrocería
+                // El usuario podrá mover la cámara manualmente desde esta posición neutra
+                modelViewer.cameraOrbit  = "90deg 86deg 80%";
+                modelViewer.cameraTarget = "auto";
             }
         });
     }
@@ -64,32 +77,37 @@ function changeColor(piezas, color, event) {
 function setRoughness(pieza, valor, event) {
     if (!modelViewer.model) return;
 
-    // Buscamos el material por nombre
-    const material = modelViewer.model.materials.find(m => m.name === pieza);
-    
-    if (material) {
-        // 1. Aplicamos el acabado en el modelo 3D
-        material.pbrMetallicRoughness.setRoughnessFactor(valor);
+    // Convertir a array si es un string (para reusar lógica)
+    const piezas = Array.isArray(pieza) ? pieza : [pieza];
+
+    piezas.forEach(nombrePieza => {
+        // Buscamos el material por nombre
+        const material = modelViewer.model.materials.find(m => m.name === nombrePieza);
         
-        // 2. GUARDADO PARA EL CÓDIGO: 
-        // Guardamos el valor numérico como string (ej: "0.5") para que el diccionario lo reconozca
-        elecciones[pieza + "_Rough"] = valor.toString();
-
-        // 3. Feedback visual: Resaltar el botón seleccionado
-        if (event && event.target) {
-            const container = event.target.parentElement;
-            container.querySelectorAll('.btn-finish').forEach(btn => {
-                btn.classList.remove('selected-option');
-            });
-            event.target.classList.add('selected-option');
+        if (material) {
+            // 1. Aplicamos el acabado en el modelo 3D
+            material.pbrMetallicRoughness.setRoughnessFactor(valor);
+            
+            // 2. GUARDADO PARA EL CÓDIGO: 
+            // Guardamos el valor numérico como string (ej: "0.5") para que el diccionario lo reconozca
+            elecciones[nombrePieza + "_Rough"] = valor.toString();
+        } else {
+            console.warn(`No se encontró el material: ${nombrePieza}`);
         }
+    });
 
-        // 4. Actualizamos el código de la Topbar automáticamente
-        if (typeof generarCodigoConfiguracion === "function") {
-            generarCodigoConfiguracion();
-        }
-    } else {
-        console.warn(`No se encontró el material: ${pieza}`);
+    // 3. Feedback visual: Resaltar el icono seleccionado (solo 1 vez por clic)
+    if (event && event.target) {
+        const container = event.target.parentElement;
+        container.querySelectorAll('.btn-finish, .finish-dot').forEach(btn => {
+            btn.classList.remove('selected-option');
+        });
+        event.target.classList.add('selected-option');
+    }
+
+    // 4. Actualizamos el código de la Topbar automáticamente
+    if (typeof generarCodigoConfiguracion === "function") {
+        generarCodigoConfiguracion();
     }
 }
 
@@ -252,17 +270,17 @@ function toggleLlanta(tipo) {
 
 // 5. NAVEGACIÓN INTERNA (Pasos del formulario)
 function irAFormulario() {
-    document.getElementById('paso-personalizacion').style.display = 'none';
-    document.getElementById('paso-formulario').style.display = 'block';
-    const titulo = document.getElementById('sidebar-title');
-    if (titulo) titulo.innerText = 'TUS DATOS';
+    const modal = document.getElementById('modal-formulario');
+    if(modal) {
+        modal.style.display = 'flex';
+    }
 }
 
 function irAConfigurador() {
-    document.getElementById('paso-personalizacion').style.display = 'block';
-    document.getElementById('paso-formulario').style.display = 'none';
-    const titulo = document.getElementById('sidebar-title');
-    if (titulo) titulo.innerText = 'CONFIGURADOR';
+    const modal = document.getElementById('modal-formulario');
+    if(modal) {
+        modal.style.display = 'none';
+    }
 }
 
 
@@ -427,3 +445,19 @@ function copiarCodigo() {
 }
 
 
+
+
+// Timeout de seguridad de 5 segundos máximo para evitar que se quede bloqueado por error
+setTimeout(() => {
+    const loader = document.getElementById('loading-screen');
+    if (loader && !loader.classList.contains('loading-hidden')) {
+        console.warn('Quitando pantalla de carga por tiempo maximo');
+        loader.classList.add('loading-hidden');
+    }
+}, 5000);
+
+// Detectar cambios en visibilidad
+modelViewer.addEventListener('load', () => {
+    const loader = document.getElementById('loading-screen');
+    if (loader) loader.classList.add('loading-hidden');
+});
