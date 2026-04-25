@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurador Yamaha SR400 | Custom Moto Lab</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <script>
+        // Identificador para el sistema de códigos de configuración
+        window.MODEL_ID = "SR400";
+    </script>
+</head>
+
+<body class="body-configurador">
+
+    <!-- PANTALLA DE CARGA -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="spinner"></div>
+        <div class="loading-text">Cargando Taller...</div>
+    </div>
+
+
+    <div class="viewer-wrapper">
+        <model-viewer id="moto-3d" src="MODELOS/yamaha_sr400.glb" environment-image="estudio.hdr" tone-mapping="aces"
+            shadow-intensity="1.5" shadow-softness="1" camera-controls exposure="1.3" camera-orbit="45deg 75deg 105%"
+            crossorigin="anonymous">
+        </model-viewer>
+    </div>
+
+    <div class="topbar-code">
+        <div class="topbar-content">
+            <div class="brand-small">YAMAHA SR400 <span class="custom-lab">Custom Code</span></div>
+
+            <div class="code-actions">
+                <div class="code-display-wrapper">
+                    <span class="label-mini">TU CÓDIGO:</span>
+                    <code id="display-code">SELECCIONA UNA OPCIÓN</code>
+                    <button class="btn-copy-icon" onclick="copiarCodigo()" title="Copiar Código">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                            <path
+                                d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="code-input-wrapper">
+                    <input type="text" id="input-code" placeholder="Pegar código...">
+                    <button class="btn-load-code" onclick="cargarCodigo()">CARGAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <a href="yamaha-models.html" class="btn-volver-atras">← Volver</a>
+            <h2 id="sidebar-title">Configurador </h2>
+        </div>
+
+        <div class="scroll-container">
+            <button class="accordion" data-camera-orbit="90deg 86deg 80%" data-camera-target="auto">Carrocería</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Depósito</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#494444"
+                            onclick="changeColor('DEPOSITO', '#494444',event)"></div>
+                        <div class="color-dot" style="background:#111" onclick="changeColor('DEPOSITO', '#111',event)">
+                        </div>
+                        <div class="color-dot" style="background:#bdc3c7"
+                            onclick="changeColor('DEPOSITO', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#01073a"
+                            onclick="changeColor('DEPOSITO', '#01073a',event)"></div>
+                        <div class="color-dot" style="background:#013a14"
+                            onclick="changeColor('DEPOSITO', '#013a14',event)"></div>
+                    </div>
+
+                    <label>Acabado Depósito</label>
+                    <div class="contenedor-acabados">
+                        <button class="finish-dot finish-normal" onclick="setRoughness('DEPOSITO', 0.5,event)"
+                            title="Normal"></button>
+                        <button class="finish-dot finish-cromo" onclick="setRoughness('DEPOSITO', 0.05,event)"
+                            title="Cromo"></button>
+                        <button class="finish-dot finish-mate" onclick="setRoughness('DEPOSITO', 0.9,event)"
+                            title="Mate"></button>
+                    </div>
+                    <label>Guardabarros Delantero</label>
+                    <div class="color-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 10px;">
+                        <button class="btn-finish" id="btn-f-fender-1" onclick="toggleGuardabarros(1, 'front', event)">Tipo 1</button>
+                        <button class="btn-finish" id="btn-f-fender-2" onclick="toggleGuardabarros(2, 'front', event)">Tipo 2</button>
+                        <button class="btn-finish" id="btn-f-fender-3" onclick="toggleGuardabarros(3, 'front', event)">Tipo 3</button>
+                    </div>
+
+                    <label>Guardabarros Trasero</label>
+                    <div class="color-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 10px;">
+                        <button class="btn-finish" id="btn-b-fender-1" onclick="toggleGuardabarros(1, 'back', event)">Tipo 1</button>
+                        <button class="btn-finish" id="btn-b-fender-2" onclick="toggleGuardabarros(2, 'back', event)">Tipo 2</button>
+                    </div>
+
+                    <label>Color Guardabarros</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#494444"
+                            onclick="changeColor(['GUARDABARROS_F_01','GUARDABARROS_F_02','GUARDABARROS_F_03','GUARDABARROS_B_01','GUARDABARROS_B_02'], '#494444',event)"></div>
+                        <div class="color-dot" style="background:#111"
+                            onclick="changeColor(['GUARDABARROS_F_01','GUARDABARROS_F_02','GUARDABARROS_F_03','GUARDABARROS_B_01','GUARDABARROS_B_02'], '#111',event)"></div>
+                        <div class="color-dot" style="background:#bdc3c7"
+                            onclick="changeColor(['GUARDABARROS_F_01','GUARDABARROS_F_02','GUARDABARROS_F_03','GUARDABARROS_B_01','GUARDABARROS_B_02'], '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#01073a"
+                            onclick="changeColor(['GUARDABARROS_F_01','GUARDABARROS_F_02','GUARDABARROS_F_03','GUARDABARROS_B_01','GUARDABARROS_B_02'], '#01073a',event)"></div>
+                        <div class="color-dot" style="background:#013a14"
+                            onclick="changeColor(['GUARDABARROS_F_01','GUARDABARROS_F_02','GUARDABARROS_F_03','GUARDABARROS_B_01','GUARDABARROS_B_02'], '#013a14',event)"></div>
+                    </div>
+
+                    <label>Acabado Guardabarros</label>
+                    <div class="contenedor-acabados">
+                        <button class="finish-dot finish-normal" onclick="setRoughness(['GUARDABARROS_F_01','GUARDABARROS_F_02','GUARDABARROS_F_03','GUARDABARROS_B_01','GUARDABARROS_B_02'], 0.5,event)"
+                            title="Normal"></button>
+                        <button class="finish-dot finish-cromo" onclick="setRoughness(['GUARDABARROS_F_01','GUARDABARROS_F_02','GUARDABARROS_F_03','GUARDABARROS_B_01','GUARDABARROS_B_02'], 0.05,event)"
+                            title="Cromo"></button>
+                        <button class="finish-dot finish-mate" onclick="setRoughness(['GUARDABARROS_F_01','GUARDABARROS_F_02','GUARDABARROS_F_03','GUARDABARROS_B_01','GUARDABARROS_B_02'], 0.9,event)"
+                            title="Mate"></button>
+                    </div>
+
+                    <label>Colin</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#494444"
+                            onclick="changeColor('COLIN', '#494444',event)"></div>
+                        <div class="color-dot" style="background:#111" onclick="changeColor('COLIN', '#111',event)">
+                        </div>
+                        <div class="color-dot" style="background:#bdc3c7"
+                            onclick="changeColor('COLIN', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#01073a"
+                            onclick="changeColor('COLIN', '#01073a',event)"></div>
+                        <div class="color-dot" style="background:#013a14"
+                            onclick="changeColor('COLIN', '#013a14',event)"></div>
+                    </div>
+
+                    <label>Acabado Colin</label>
+                    <div class="contenedor-acabados">
+                        <button class="finish-dot finish-normal" onclick="setRoughness('COLIN', 0.5,event)"
+                            title="Normal"></button>
+                        <button class="finish-dot finish-cromo" onclick="setRoughness('COLIN', 0.05,event)"
+                            title="Cromo"></button>
+                        <button class="finish-dot finish-mate" onclick="setRoughness('COLIN', 0.9,event)"
+                            title="Mate"></button>
+                    </div>
+
+                    <label>Faro Delantero</label>
+                    <div class="color-grid" style="grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                        <button class="btn-finish" id="btn-faro-or" onclick="toggleFaro('original', event)">Original</button>
+                        <button class="btn-finish" id="btn-faro-01" onclick="toggleFaro('custom', event)">Custom 01</button>
+                    </div>
+
+                    <label>Color Faro</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#494444" 
+                            onclick="changeColor(['FARO_OR', 'SOPORTE_FARO_OR', 'FARO_01', 'SOPORTE_FARO_01'], '#494444',event)">
+                        </div>
+                        <div class="color-dot" style="background:#111" 
+                            onclick="changeColor(['FARO_OR', 'SOPORTE_FARO_OR', 'FARO_01', 'SOPORTE_FARO_01'], '#111',event)"></div>
+                        <div class="color-dot" style="background:#bdc3c7" 
+                            onclick="changeColor(['FARO_OR', 'SOPORTE_FARO_OR', 'FARO_01', 'SOPORTE_FARO_01'], '#bdc3c7',event)">
+                        </div>
+                        <div class="color-dot" style="background:#01073a" 
+                            onclick="changeColor(['FARO_OR', 'SOPORTE_FARO_OR', 'FARO_01', 'SOPORTE_FARO_01'], '#01073a',event)">
+                        </div>
+                        <div class="color-dot" style="background:#013a14" 
+                            onclick="changeColor(['FARO_OR', 'SOPORTE_FARO_OR', 'FARO_01', 'SOPORTE_FARO_01'], '#013a14',event)">
+                        </div>
+                    </div>
+
+                    <label>Acabado</label>
+                    <div class="contenedor-acabados">
+                        <button class="finish-dot finish-normal" 
+                            onclick="setRoughness(['FARO_OR', 'SOPORTE_FARO_OR', 'FARO_01', 'SOPORTE_FARO_01'], 0.5,event)"
+                            title="Normal"></button>
+                        <button class="finish-dot finish-cromo" 
+                            onclick="setRoughness(['FARO_OR', 'SOPORTE_FARO_OR', 'FARO_01', 'SOPORTE_FARO_01'], 0.05,event)"
+                            title="Cromo"></button>
+                        <button class="finish-dot finish-mate" 
+                            onclick="setRoughness(['FARO_OR', 'SOPORTE_FARO_OR', 'FARO_01', 'SOPORTE_FARO_01'], 0.9,event)"
+                            title="Mate"></button>
+                    </div>
+
+                    <label>Intermitentes Delanteros</label>
+                    <div class="color-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 10px;">
+                        <button class="btn-finish" id="btn-f-int-or" onclick="toggleIntermitentes('OR', 'front', event)">Original</button>
+                        <button class="btn-finish" id="btn-f-int-01" onclick="toggleIntermitentes('01', 'front', event)">Tipo 1</button>
+                        <button class="btn-finish" id="btn-f-int-02" onclick="toggleIntermitentes('02', 'front', event)">Tipo 2</button>
+                    </div>
+
+                    <label>Intermitentes Traseros</label>
+                    <div class="color-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 10px;">
+                        <button class="btn-finish" id="btn-b-int-or" onclick="toggleIntermitentes('OR', 'back', event)">Original</button>
+                        <button class="btn-finish" id="btn-b-int-01" onclick="toggleIntermitentes('01', 'back', event)">Tipo 1</button>
+                        <button class="btn-finish" id="btn-b-int-02" onclick="toggleIntermitentes('02', 'back', event)">Tipo 2</button>
+                    </div>
+
+                    <label>Color Intermitentes</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#494444" 
+                            onclick="changeColor(['INTERMITENTES_F_OR', 'INTERMITENTES_F_01', 'INTERMITENTES_F_02', 'INTERMITENTES_B_OR', 'INTERMITENTES_B_01', 'INTERMITENTES_B_02'], '#494444',event)">
+                        </div>
+                        <div class="color-dot" style="background:#111" 
+                            onclick="changeColor(['INTERMITENTES_F_OR', 'INTERMITENTES_F_01', 'INTERMITENTES_F_02', 'INTERMITENTES_B_OR', 'INTERMITENTES_B_01', 'INTERMITENTES_B_02'], '#111',event)"></div>
+                        <div class="color-dot" style="background:#bdc3c7" 
+                            onclick="changeColor(['INTERMITENTES_F_OR', 'INTERMITENTES_F_01', 'INTERMITENTES_F_02', 'INTERMITENTES_B_OR', 'INTERMITENTES_B_01', 'INTERMITENTES_B_02'], '#bdc3c7',event)">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <button class="accordion" data-camera-orbit="90deg 25deg 50%"
+                data-camera-target="20m 50m -55m">Asiento</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Ángulo de la Curva</label>
+                    <div class="color-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 15px;">
+                        <button class="btn-finish" id="btn-curva-1" onclick="toggleAsientoConfig(1, null, event)">Curva
+                            1</button>
+                        <button class="btn-finish" id="btn-curva-2" onclick="toggleAsientoConfig(2, null, event)">Curva
+                            2</button>
+                        <button class="btn-finish" id="btn-curva-3" onclick="toggleAsientoConfig(3, null, event)">Curva
+                            3</button>
+                        <button class="btn-finish" id="btn-curva-4" onclick="toggleAsientoConfig(4, null, event)">Curva
+                            4</button>
+                    </div>
+
+                    <label>Tipo de Asiento</label>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                        <button class="btn-finish" id="btn-asiento-sin"
+                            onclick="toggleAsientoConfig(null, false, event)">Sin Colín</button>
+                        <button class="btn-finish" id="btn-asiento-con"
+                            onclick="toggleAsientoConfig(null, true, event)">Con Colín</button>
+                    </div>
+
+                    <label>Color Asiento</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#bdc3c7"
+                            onclick="changeColorAsiento('#bdc3c7', event)"></div>
+                        <div class="color-dot" style="background:#713610"
+                            onclick="changeColorAsiento('#713610', event)"></div>
+                        <div class="color-dot" style="background:#000" onclick="changeColorAsiento('#000', event)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="accordion" data-camera-orbit="90deg 86deg 80%" data-camera-target="auto">Mecánica &
+                Chasis</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Chasis</label>
+                    <div class="color-grid">
+                         <div class="color-dot" style="background:#111"
+                            onclick="changeColor('CHASIS', '#111',event)">
+                        </div>
+                        <div class="color-dot" style="background:#e5e9ec"
+                            onclick="changeColor('CHASIS', '#e5e9ec',event)"></div>
+                        <div class="color-dot" style="background:#8d8d8d"
+                            onclick="changeColor('CHASIS', '#8d8d8d',event)"></div>
+                    </div>
+                    <label>Acabado Chasis</label>
+                    <div class="contenedor-acabados">
+                        <button class="finish-dot finish-normal" onclick="setRoughness('CHASIS', 0.5,event)"
+                            title="Normal"></button>
+                        <button class="finish-dot finish-cromo" onclick="setRoughness('CHASIS', 0.05,event)"
+                            title="Cromo"></button>
+                        <button class="finish-dot finish-mate" onclick="setRoughness('CHASIS', 0.9,event)"
+                            title="Mate"></button>
+                    </div>
+
+                    <label>Motor</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#111" onclick="changeColor('MOTOR', '#111',event)">
+                        </div>
+                        <div class="color-dot" style="background:#383838"
+                            onclick="changeColor('MOTOR', '#383838',event)"></div>
+                        <div class="color-dot" style="background:#8d8d8d"
+                            onclick="changeColor('MOTOR', '#8d8d8d',event)"></div>
+                    </div>
+
+                    <label>Acabado Motor</label>
+                    <div class="contenedor-acabados">
+                        <button class="finish-dot finish-normal" onclick="setRoughness('MOTOR', 0.5,event)"
+                            title="Normal"></button>
+                        <button class="finish-dot finish-cromo" onclick="setRoughness('MOTOR', 0.05,event)"
+                            title="Cromo"></button>
+                        <button class="finish-dot finish-mate" onclick="setRoughness('MOTOR', 0.9,event)"
+                            title="Mate"></button>
+                    </div>
+
+                </div>
+            </div>
+
+            <button class="accordion" data-camera-orbit="165deg 76deg 60%" data-camera-target="auto">Tren
+                Delantero</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Horquillas</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#bdc3c7"
+                            onclick="changeColor('HORQUILLAS', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#B1B52E"
+                            onclick="changeColor('HORQUILLAS', '#B1B52E',event)"></div>
+                        <div class="color-dot" style="background:#111"
+                            onclick="changeColor('HORQUILLAS', '#111',event)"></div>
+                    </div>
+
+                    <label>Acabado Horquillas</label>
+                    <div class="contenedor-acabados">
+                        <button class="finish-dot finish-normal" onclick="setRoughness('HORQUILLAS', 0.5,event)"
+                            title="Normal"></button>
+                        <button class="finish-dot finish-cromo" onclick="setRoughness('HORQUILLAS', 0.05,event)"
+                            title="Cromo"></button>
+                        <button class="finish-dot finish-mate" onclick="setRoughness('HORQUILLAS', 0.9,event)"
+                            title="Mate"></button>
+                    </div>
+
+                    <label>Tija</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#bdc3c7"
+                            onclick="changeColor('TIJA', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#B1B52E"
+                            onclick="changeColor('TIJA', '#B1B52E',event)"></div>
+                        <div class="color-dot" style="background:#111" onclick="changeColor('TIJA', '#111',event)">
+                        </div>
+                    </div>
+
+                    <label>Acabado Tija</label>
+                    <div class="contenedor-acabados">
+                        <button class="finish-dot finish-normal" onclick="setRoughness('TIJA', 0.5,event)"
+                            title="Normal"></button>
+                        <button class="finish-dot finish-cromo" onclick="setRoughness('TIJA', 0.05,event)"
+                            title="Cromo"></button>
+                        <button class="finish-dot finish-mate" onclick="setRoughness('TIJA', 0.9,event)"
+                            title="Mate"></button>
+                    </div>
+
+                    <label>Pinza de Freno</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#bdc3c7"
+                            onclick="changeColor('PINZA_FRENO', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#111"
+                            onclick="changeColor('PINZA_FRENO', '#111',event)"></div>
+                        <div class="color-dot" style="background:#e74c3c"
+                            onclick="changeColor('PINZA_FRENO', '#e74c3c',event)"></div>
+                        <div class="color-dot" style="background:#f1c40f"
+                            onclick="changeColor('PINZA_FRENO', '#f1c40f',event)"></div>
+                    </div>
+                    <label>Acabado Pinza</label>
+                    <div class="contenedor-acabados">
+                        <button class="finish-dot finish-normal" onclick="setRoughness('PINZA_FRENO', 0.5,event)"
+                            title="Normal"></button>
+                        <button class="finish-dot finish-cromo" onclick="setRoughness('PINZA_FRENO', 0.05,event)"
+                            title="Cromo"></button>
+                        <button class="finish-dot finish-mate" onclick="setRoughness('PINZA_FRENO', 0.9,event)"
+                            title="Mate"></button>
+                    </div>
+
+                    <label>Puños</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#bdc3c7"
+                            onclick="changeColor('PUÑOS_01', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#713610"
+                            onclick="changeColor('PUÑOS_01', '#713610',event)"></div>
+                        <div class="color-dot" style="background:#000"
+                            onclick="changeColor('PUÑOS_01', '#000',event)"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <button class="accordion" data-camera-orbit="75deg 83deg 25%" data-camera-target="0m 50m -45m">Suspensión
+                Trasera</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Suspensión</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#ff0000"
+                            onclick="changeColor('SUSPENSION_01_B_SR400', '#ff0000',event)"></div>
+                        <div class="color-dot" style="background:#f1c40f"
+                            onclick="changeColor('SUSPENSION_01_B_SR400', '#f1c40f',event)"></div>
+                        <div class="color-dot" style="background:#bdc3c7"
+                            onclick="changeColor('SUSPENSION_01_B_SR400', '#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#01073a"
+                            onclick="changeColor('SUSPENSION_01_B_SR400', '#01073a',event)"></div>
+                        <div class="color-dot" style="background:#013a14"
+                            onclick="changeColor('SUSPENSION_01_B_SR400', '#013a14',event)"></div>
+                    </div>
+                    <label>Acabado Suspensión</label>
+                    <div class="contenedor-acabados">
+                        <button class="finish-dot finish-normal"
+                            onclick="setRoughness('SUSPENSION_01_B_SR400', 0.5,event)" title="Normal"></button>
+                        <button class="finish-dot finish-cromo"
+                            onclick="setRoughness('SUSPENSION_01_B_SR400', 0.05,event)" title="Cromo"></button>
+                        <button class="finish-dot finish-mate"
+                            onclick="setRoughness('SUSPENSION_01_B_SR400', 0.9,event)" title="Mate"></button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="accordion" data-camera-orbit="90deg 89deg 58%"
+                data-camera-target="0m 35m -25m">Ruedas</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Tipo</label>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="btn-finish" id="btn-taco" onclick="toggleRuedaDEL('taco',event)">Rueda
+                            Taco</button>
+                        <button class="btn-finish" id="btn-liso" onclick="toggleRuedaDEL('liso',event)">Rueda
+                            Liso</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="accordion" data-camera-orbit="90deg 89deg 58%"
+                data-camera-target="0m 35m -25m">Llantas</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Llantas de Radios</label>
+                    <div class="color-grid">
+                        <div class="color-dot" style="background:#bdc3c7"
+                            onclick="changeColor(['LLANTA_F_R','LLANTA_B_R'],'#bdc3c7',event)"></div>
+                        <div class="color-dot" style="background:#B1B52E"
+                            onclick="changeColor(['LLANTA_F_R','LLANTA_B_R'], '#B1B52E',event)"></div>
+                        <div class="color-dot" style="background:#000"
+                            onclick="changeColor(['LLANTA_F_R','LLANTA_B_R'], '#000',event)"></div>
+                    </div>
+                    <label>Acabado</label>
+                    <div class="contenedor-acabados">
+                        <button class="finish-dot finish-normal"
+                            onclick="setRoughness(['LLANTA_F_R', 'LLANTA_B_R'], 0.5,event)"
+                            title="Normal"></button>
+                        <button class="finish-dot finish-cromo"
+                            onclick="setRoughness(['LLANTA_F_R', 'LLANTA_B_R'], 0.05,event)"
+                            title="Cromo"></button>
+                        <button class="finish-dot finish-mate"
+                            onclick="setRoughness(['LLANTA_F_R', 'LLANTA_B_R'], 0.9,event)"
+                            title="Mate"></button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="accordion" data-camera-orbit="0deg 30deg 0%"
+                data-camera-target="20m 0m -160m">Instrumentación</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Tipo de Velocimetro</label>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="btn-finish" id="btn-analog"
+                            onclick="toggleTacometro('analogico',event)">Analógico
+                            Retro</button>
+                        <button class="btn-finish" id="btn-digital" onclick="toggleTacometro('digital',event)">Digital
+                            Moderno</button>
+                    </div>
+                    <p style="font-size: 0.6rem; color: #555; margin-top: 10px; text-transform: uppercase;">
+                        * Cambia el estilo del panel de instrumentos
+                    </p>
+                </div>
+            </div>
+
+            <button class="accordion" data-camera-orbit="0deg 30deg 0%"
+                data-camera-target="20m 0m -160m">Retrovisores</button>
+            <div class="panel">
+                <div class="panel-content">
+                    <label>Modelo de Espejos</label>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="btn-finish" id="btn-mir-original"
+                            onclick="toggleRetrovisores('original',event)">Originales</button>
+                        <button class="btn-finish" id="btn-mir-circular"
+                            onclick="toggleRetrovisores('circular',event)">Circular Clásico</button>
+                        <button class="btn-finish" id="btn-mir-punos_up"
+                            onclick="toggleRetrovisores('punos_up',event)">Extremo (Arriba)</button>
+                        <button class="btn-finish" id="btn-mir-punos_down"
+                            onclick="toggleRetrovisores('punos_down',event)">Extremo (Abajo)</button>
+                        <button class="btn-finish" id="btn-mir-none"
+                            onclick="toggleRetrovisores('none',event)">Sin Espejos</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="paso-personalizacion">
+            <div style="padding: 20px; text-align: right;">
+                <button class="btn-configurar" onclick="irAFormulario()">Siguiente</button>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <!-- MODAL FORMULARIO -->
+    <div id="modal-formulario" class="modal-overlay">
+        <div class="modal-content">
+            <h3>FINALIZA TU CONFIGURACIÓN</h3>
+            <label>Nombre</label>
+            <input type="text" id="user-name" placeholder="Tu nombre">
+
+            <label>Email</label>
+            <input type="email" id="user-email" placeholder="tu@email.com">
+
+            <label>¿Dispones de la moto?</label>
+            <select type="moto" id="user-disponibilidad"
+                style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;">
+                <option value="si">Dispongo de la moto</option>
+                <option value="no">No dispongo de la moto</option>
+            </select>
+
+            <label>Notas</label>
+            <textarea id="user-message" rows="4"></textarea>
+
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button class="btn-finish" style="flex:1" onclick="irAConfigurador()">Cerrar</button>
+                <button id="btn-enviar-final" class="btn-configurar" style="flex:2" onclick="enviarPresupuesto()">
+                    <span id="text-btn">Enviar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="moto-logic.js"></script>
+</body>
+
+</html>
